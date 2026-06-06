@@ -1,0 +1,17 @@
+# Per-host vars for the BGP config template
+hostname: r1
+asn: 65001
+router_id: 10.255.0.1
+loopback_ip: 10.255.0.1
+loopback_mask: 255.255.255.255
+
+bgp:
+  neighbors:
+    - ip: 10.0.0.2
+      remote_as: 65002
+      description: "to r2 - dc1"
+    - ip: 10.0.0.3
+      remote_as: 65003
+      description: "to sw1 - dc1"
+  networks:
+    - prefix: 10.255.0.1/32

@@ -1,0 +1,26 @@
+! {{ hostname }} — rendered by netdevops-config-render
+! Do not edit by hand.
+!
+hostname {{ hostname }}
+!
+interface Loopback0
+ ip address {{ loopback_ip }} {{ loopback_mask }}
+!
+router bgp {{ asn }}
+ bgp router-id {{ router_id }}
+ bgp log-neighbor-changes
+{% for n in bgp.neighbors | sort(attribute='ip') %}
+ neighbor {{ n.ip }} remote-as {{ n.remote_as }}
+ neighbor {{ n.ip }} description {{ n.description }}
+{% endfor %}
+ !
+ address-family ipv4 unicast
+{% for n in bgp.neighbors | sort(attribute='ip') %}
+  neighbor {{ n.ip }} activate
+{% endfor %}
+{% for net in bgp.networks %}
+  network {{ net.prefix }}
+{% endfor %}
+ exit-address-family
+!
+end
